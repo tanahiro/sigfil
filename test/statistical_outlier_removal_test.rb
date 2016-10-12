@@ -8,15 +8,27 @@ class StatisticalOutlierRemovalTest < Minitest::Test
     nm = load_data_1d(filename)
 
     mean_k  = 5
-    std_mul = 3.0
+    std_mul = 1.5
     sor = SigFil::StatisticalOutlierRemoval.new(nm, mean_k, std_mul)
-    actual = sor.apply_filter.col(1)
+    actual = sor.apply_filter([0.1, 1]).col(1)
 
     filename = File.join(__dir__, "data", "1d-1_sor.dat")
     expected = load_data(filename)
 
     assert_equal(expected.shape, actual.shape)
     assert_equal(expected.to_a, actual.to_a)
+  end
+
+  def test_apply_filter_1d_1_flann
+    filename = File.join(__dir__, "data", "1d-1.dat")
+    nm = load_data_1d(filename)
+
+    mean_k  = 5
+    std_mul = 1.5
+    sor = SigFil::StatisticalOutlierRemoval.new(nm, mean_k, std_mul, :flann)
+    actual = sor.apply_filter([0.1, 1]).col(1)
+
+    assert_instance_of(NMatrix, actual)
   end
 
   def test_apply_filter_2d_circle
