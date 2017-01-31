@@ -17,6 +17,10 @@ class StatisticalOutlierRemovalTest < Minitest::Test
 
     assert_equal(expected.shape, actual.shape)
     assert_equal(expected.to_a, actual.to_a)
+
+    actual   = sor.removed_indices
+    expected = [10, 50, 70]
+    assert_equal(expected.to_a, actual.to_a)
   end
 
   def test_apply_filter_1d_1_flann
@@ -45,6 +49,10 @@ class StatisticalOutlierRemovalTest < Minitest::Test
 
     assert_equal(expected.shape, actual.shape)
     assert_equal(expected.to_a, actual.to_a)
+
+    actual = sor.removed_indices
+    expected = [10, 30, 70]
+    assert_equal(expected, actual)
   end
 end
 

@@ -7,6 +7,7 @@ module SigFil
     include Math
 
     attr_accessor :mean_k, :std_mul, :dataset, :searcher
+    attr_reader :removed_indices
 
     SEARCHER = [:kdtree, :flann]
 
@@ -75,10 +76,13 @@ module SigFil
       d_std  = nm_d.std[0]
       d_th   = d_mean + @std_mul*d_std
 
-      filtered = []
+      filtered         = []
+      @removed_indices = []
       distances.each_with_index do |d, i|
         if d <= d_th
           filtered << @dataset.row(i).to_a
+        else
+          @removed_indices << i
         end
       end
 
